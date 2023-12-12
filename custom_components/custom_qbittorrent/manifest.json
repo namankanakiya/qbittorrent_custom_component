@@ -3,8 +3,8 @@
   "name": "Qbittorrent_custom",
   "codeowners": [],
   "dependencies": [],
-  "documentation": "https://github.com/radsonpatrick/qbittorrent_custom_component",
+  "documentation": "https://github.com/namankanakiya/qbittorrent_custom_component",
   "iot_class": "local_polling",
-  "requirements": ["qbittorrent-api==2023.3.44"],
+  "requirements": ["qbittorrent-api==2023.11.57"],
   "version": "0.1.0"
 }
