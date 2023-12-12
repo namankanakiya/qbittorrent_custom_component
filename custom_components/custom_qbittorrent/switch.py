@@ -14,7 +14,7 @@ import homeassistant.helpers.config_validation as cv
 _LOGGER = logging.getLogger(__name__)
 
 DEFAULT_NAME = 'Qbit'
-DEFAULT_PORT = 8080
+DEFAULT_PORT = 8099
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Required(CONF_HOST): cv.string,
@@ -83,12 +83,13 @@ class QbittorrentSwitch(ToggleEntity):
     def turn_on(self, **kwargs):
         """Turn the device on."""
         self.client.auth_log_in()
-        self.client.transfer_setSpeedLimitsMode(True)
+        data = self.client.torrents_info(filter='errored')
+        for torrent in data:
+            self.client.torrents_set_force_start(enable=True, torrent_hashes=[torrent.hash])
+            self.client.torrents_resume(torrent_hashes=[torrent.hash])
 
     def turn_off(self, **kwargs):
         """Turn the device off."""
-        self.client.auth_log_in()
-        self.client.transfer_setSpeedLimitsMode(False)
 
     def update(self):
         """Get the latest data from qbittorrent and updates the state."""

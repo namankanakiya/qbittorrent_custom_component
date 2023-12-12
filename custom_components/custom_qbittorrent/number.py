@@ -18,7 +18,7 @@ CONF_MIN: Final = "min"
 _LOGGER = logging.getLogger(__name__)
 
 DEFAULT_NAME = 'qBit'
-DEFAULT_PORT = 8080
+DEFAULT_PORT = 8099
 DEFAULT_MIN = 0
 DEFAULT_MAX = 500
 DEFAULT_STEP = 0.1

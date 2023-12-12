@@ -16,7 +16,7 @@ from homeassistant.exceptions import PlatformNotReady
 _LOGGER = logging.getLogger(__name__)
 
 DEFAULT_NAME = 'QBittorrent'
-DEFAULT_PORT = 8080
+DEFAULT_PORT = 8099
 TRIM_SIZE = 35
 
 SENSOR_TYPES = {
@@ -28,6 +28,7 @@ SENSOR_TYPES = {
     'seeding_torrents': ['Seeding', None],
     'resumed_torrents' : ['Resumed Torrents', None],
     'paused_torrents' : ['Paused Torrents', None],
+    'errored_torrents': ['Errored Torrents', None],
     'completed_torrents' : ['Completed Torrents', None],
     'download_speed': ['Down Speed', 'KiB/s'],
     'upload_speed': ['Up Speed', 'KiB/s'],
@@ -192,6 +193,14 @@ class QbittorrentSensor(Entity):
         elif self.type == 'paused_torrents':
             data = self.client.torrents_info(filter='paused')
             self._attr_icon = "mdi:pause"
+            for torrent in data:
+                attributes[trim_name(torrent)] = format_progress(torrent)
+
+            self._state = len(data)
+            self._attribute = attributes
+        elif self.type == 'errored_torrents':
+            data = self.client.torrents_info(filter='errored')
+            self._attr_icon = "mdi:cancel"
             for torrent in data:
                 attributes[trim_name(torrent)] = format_progress(torrent)
 
